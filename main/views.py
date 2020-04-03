@@ -54,6 +54,8 @@ def account(request):
     return response
  
 def user_login(request):
+    context_dict = {}
+    context_dict['fail'] = 'False' #Checks if the user logged in successfully
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -68,9 +70,8 @@ def user_login(request):
                 return HttpResponse("Your RMCM account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-    else:
-        return render(request, 'main/login.html')
+            context_dict['fail']='True'
+    return render(request, 'main/login.html', context_dict)
     
 @login_required
 def user_logout(request):
